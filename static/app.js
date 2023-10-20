@@ -2,6 +2,7 @@ const App = {
   data() {
     return {
       servers: [],
+      name: "",
     };
   },
   methods: {
@@ -10,7 +11,6 @@ const App = {
         name: this.name,
         status: "created",
       };
-
       const res = await fetch("/api/server", {
         method: "POST",
         headers: {
@@ -20,13 +20,16 @@ const App = {
       });
       this.name = "";
       const newServer = await res.json();
-      console.log(newServer);
+      this.servers.push(newServer);
+    },
+    async remove(id) {
+      await fetch(`/api/server/${id}`, { method: "DELETE" });
+      this.servers = this.servers.filter((s) => s.id !== id);
     },
   },
   async mounted() {
     const res = await fetch("/api/server");
-    const data = await res.json();
-    this.servers = data;
+    this.servers = await res.json();
   },
 };
 

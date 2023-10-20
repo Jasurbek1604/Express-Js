@@ -1,14 +1,12 @@
-const server = [
-  { id: "1", name: "server1", status: "Working" },
-  { id: "2", name: "server2", status: "Working" },
-  { id: "3", name: "server3", status: "Working" },
-  { id: "4", name: "server4", status: "Working" },
-  { id: "5", name: "server5", status: "Working" },
-  { id: "6", name: "server6", status: "Pending" },
+let servers = [
+  { id: "1", name: "AWS", status: "working" },
+  { id: "2", name: "Google Cloud", status: "working" },
+  { id: "3", name: "Yandex Cloud", status: "working" },
+  { id: "4", name: "Microsoft", status: "pending" },
 ];
 
 export const getAll = (req, res) => {
-  res.status(200).json(server);
+  res.status(200).json(servers);
 };
 
 export const create = (req, res) => {
@@ -16,6 +14,11 @@ export const create = (req, res) => {
     id: Date.now().toString(),
     ...req.body,
   };
-  server.push(newServer);
+  servers.push(newServer);
   res.status(201).json(newServer);
+};
+
+export const remove = (req, res) => {
+  servers = servers.filter((s) => s.id !== req.params.id);
+  res.json({ message: "Server has been removed." });
 };
